@@ -2,13 +2,25 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
 
+//博客
+import BlogView from '../views/blog/BlogView.vue'
+
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    children:[
+      {
+        path:'/BlogView',
+        name:'blogview',
+        component:BlogView
+      }
+    ]
+
+    
   },
   {
     path: '/about',
