@@ -5,25 +5,26 @@
     </div>
     <div class="content">
       <div class="options">
-        <el-menu class="el-menu-vertical-demo" default-active="1-1">
+        <el-menu class="el-menu-vertical-demo" default-active="1-1" router>
           <el-submenu index="1">
             <template v-slot:title>
               <span>博客</span>
             </template>
-            <el-menu-item index="1-1"> 
+            <el-menu-item index="1-1" :route="{ path: '/blogView' }">
               博客总览
-              <router-link>
-                 博客总览
-              </router-link>
             </el-menu-item>
-            <el-menu-item index="1-2"> 博客管理 </el-menu-item>
+            <el-menu-item index="1-2" :route="{ path: '/blogManage' }">
+              博客管理
+            </el-menu-item>
           </el-submenu>
 
-          <el-menu-item index="2"> 个人设置 </el-menu-item>
+          <el-menu-item index="2" :route="{ path: '/personal' }">
+            个人设置
+          </el-menu-item>
         </el-menu>
       </div>
       <div class="view">
-        <router-view></router-view>
+        <router-view> </router-view>
       </div>
     </div>
 
@@ -36,8 +37,11 @@
 import { ref, computed } from "@vue/composition-api";
 export default {
   setup() {
+    console.log();
+
     const data = ref<string>("HHH");
     const title = ref<string>("个人博客管理网站");
+    console.log("111");
     return {
       data,
       title,
@@ -45,7 +49,7 @@ export default {
   },
 };
 </script>
-<style lang='less' scoped>
+<style lang="less" scoped>
 .home {
   padding: 20px;
   height: calc(100vh);
