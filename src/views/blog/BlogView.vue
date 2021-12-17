@@ -5,7 +5,7 @@
       <el-button
         type="primary"
         size="small"
-        @click="getBlog"
+        @click="add"
         style="margin: 10px 0 10px 0"
         >添加</el-button
       >
@@ -64,14 +64,17 @@
         </el-dropdown-menu>
       </el-dropdown> -->
     </div>
+    <create-blog-pane ref="createBlogPane"></create-blog-pane>
   </div>
 </template>
 
 <script lang="ts">
 import { ref, defineComponent, onMounted } from "@vue/composition-api";
+import CreateBlogPane from "./pane/CreateBlogPane.vue";
 import { getBlogList } from "@/api/blog";
 export default defineComponent({
-  setup() {
+  components: { CreateBlogPane },
+  setup(prop: any, context: any) {
     const selectValue = ref("下拉菜单");
     const blogData = ref([]);
     const selectDropdown = (command: any) => {
@@ -83,6 +86,10 @@ export default defineComponent({
     const openDialog = (content: any) => {
       dialogVisible.value = true;
       dialogContent.value = content.body;
+    };
+    const add = () => {
+      console.log("新增");
+      context.refs.createBlogPane.isOpen = true;
     };
     const getBlog = () => {
       getBlogList().then((res: any) => {
@@ -101,6 +108,7 @@ export default defineComponent({
       openDialog,
       dialogVisible,
       dialogContent,
+      add,
     };
   },
 });

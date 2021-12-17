@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-dialog> </el-dialog>
+    <el-dialog
+      :title="`${isCreate ? '新增' : '修改'} 博客`"
+      :visible.sync="isOpen"
+    >
+    </el-dialog>
   </div>
 </template>
 
@@ -9,7 +13,7 @@ import { ref, defineComponent } from "@vue/composition-api";
 export default defineComponent({
   setup() {
     const isCreate = ref<boolean>(true);
-    const isOpen = ref<boolean>(true);
+    const isOpen = ref<boolean>(false);
     return {
       isCreate,
       isOpen,
