@@ -8,13 +8,13 @@
         <el-form-item label="标题" prop="title">
           <el-input v-model="blogContent.title"></el-input>
         </el-form-item>
-        <el-form-item label="作者">
+        <el-form-item label="作者" prop="author">
           <el-input v-model="blogContent.author"></el-input>
         </el-form-item>
-        <el-form-item label="简介">
+        <el-form-item label="简介" prop="desc">
           <el-input type="textarea" v-model="blogContent.desc"></el-input>
         </el-form-item>
-        <el-form-item label="博客内容">
+        <el-form-item label="博客内容" prop="body">
           <el-input type="textarea" v-model="blogContent.body"></el-input>
         </el-form-item>
         <el-form-item>
@@ -42,6 +42,27 @@ export default defineComponent({
           trigger: "change",
         },
       ],
+      author: [
+        {
+          required: true,
+          message: "不能为空",
+          trigger: "change",
+        },
+      ],
+      desc: [
+        {
+          required: "true",
+          message: "不能为空",
+          trigger: "change",
+        },
+      ],
+      body: [
+        {
+          required: "true",
+          message: "不能为空",
+          trigger: "change",
+        },
+      ],
     });
     // 博客详情内容表单
     const blogContent = reactive({
@@ -51,12 +72,17 @@ export default defineComponent({
       body: "",
     });
     const submitCreate = () => {
+      // 规则检测无误后发起创建博客的请求
       context.refs.formContent.validate((valid: any) => {
         if (valid) {
           console.log(blogContent);
           createBlog(blogContent).then((res) => {
             console.log(res);
           });
+          // 触发父组件中重新渲染博客列表方法说
+          context.emit("update", "ok");
+          context.refs.formContent.resetFields();
+          isOpen.value = false;
         }
       });
     };

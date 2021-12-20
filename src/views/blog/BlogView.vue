@@ -59,7 +59,10 @@
         </el-dropdown-menu>
       </el-dropdown> -->
     </div>
-    <create-blog-pane ref="createBlogPane"></create-blog-pane>
+    <create-blog-pane
+      ref="createBlogPane"
+      @update="updateList"
+    ></create-blog-pane>
   </div>
 </template>
 
@@ -82,15 +85,22 @@ export default defineComponent({
       dialogVisible.value = true;
       dialogContent.value = content.body;
     };
+    // 点击新增按钮触发方法
     const add = () => {
       console.log("新增");
       context.refs.createBlogPane.isOpen = true;
     };
+    //获取博客列表方法
     const getBlog = () => {
       getBlogList().then((res: any) => {
         blogData.value = res.data.list;
         console.log(blogData.value);
       });
+    };
+    // 新增弹窗中点击确定后，触发父组件中的重新更新博客列表的方法
+    const updateList = (msg: any) => {
+      getBlog();
+      console.log(msg);
     };
     onMounted(() => {
       getBlog();
@@ -104,6 +114,7 @@ export default defineComponent({
       dialogVisible,
       dialogContent,
       add,
+      updateList,
     };
   },
 });
