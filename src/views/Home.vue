@@ -52,6 +52,7 @@ export default {
 <style lang="less" scoped>
 .home {
   padding: 20px;
+  width: 100%;
   height: calc(100vh);
   background-color: #fafafa;
   .header {
@@ -82,7 +83,9 @@ export default {
     }
     .view {
       flex: 1;
+      width: calc(100% - 40px - 10px - 10px - 200px);
       background-color: #f6f6f6;
+      padding: 10px;
     }
   }
 }

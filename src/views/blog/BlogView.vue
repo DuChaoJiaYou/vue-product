@@ -10,40 +10,35 @@
         >添加</el-button
       >
       <div class="blog-list">
-        <template>
-          <el-table :data="blogData" style="width: 100%">
-            <el-table-column
-              prop="title"
-              width="180"
-              label="标题"
-            ></el-table-column>
-            <el-table-column
-              prop="author"
-              label="作者"
-              width="200"
-            ></el-table-column>
-            <el-table-column
-              prop="desc"
-              label="简介"
-              width="300"
-            ></el-table-column>
-            <el-table-column label="查看详情">
-              <template slot-scope="scope">
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="openDialog(scope.row)"
-                  >查看详情</el-button
-                >
-              </template>
-            </el-table-column>
-            <!-- <el-table-column width="100" label="测试">
+        <el-table :data="blogData">
+          <el-table-column
+            prop="title"
+            width="180"
+            label="标题"
+          ></el-table-column>
+          <el-table-column
+            prop="author"
+            label="作者"
+            width="200"
+          ></el-table-column>
+          <el-table-column prop="desc" label="简介"></el-table-column>
+          <el-table-column label="查看详情">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                size="small"
+                @click="openDialog(scope.row)"
+                >查看详情</el-button
+              >
+            </template>
+          </el-table-column>
+          <!-- <el-table-column width="100" label="测试">
               <template slot-scope="scope">
                 {{ scope.row.body }}
               </template>
             </el-table-column> -->
-          </el-table>
-        </template>
+        </el-table>
+
         <el-dialog title="文章详情" :visible.sync="dialogVisible" width="40%">
           <span>
             {{ dialogContent }}
@@ -122,12 +117,11 @@ export default defineComponent({
     color: #409fff;
   }
   .blog-list {
+    padding: 0px 10px 0px 0px;
+    // border
     // width: calc(100% - 10px - 20px);
-    width: 1000px;
+    // width: 1000px;
     // overflow: hidden;
   }
-  width: 100%;
-  height: 100%;
-  padding: 10px 50px 0px 15px;
 }
 </style>
