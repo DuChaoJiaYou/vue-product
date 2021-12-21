@@ -26,17 +26,38 @@
             <template slot-scope="scope">
               <el-button
                 type="primary"
-                size="small"
+                size="mini"
                 @click="openDialog(scope.row)"
                 >查看详情</el-button
               >
             </template>
           </el-table-column>
-          <!-- <el-table-column width="100" label="测试">
-              <template slot-scope="scope">
-                {{ scope.row.body }}
-              </template>
-            </el-table-column> -->
+          <el-table-column label="创建时间">
+            <template v-slot="scope">
+              {{ new Date(scope.row.createdAt).toLocaleString() }}
+            </template>
+          </el-table-column>
+          <el-table-column label="更新时间">
+            <template v-slot="scope">
+              {{ new Date(scope.row.updatedAt).toLocaleString() }}
+            </template>
+          </el-table-column>
+          <el-table-column label="操作">
+            <template v-slot="{ row }">
+              <el-button
+                type="primary"
+                icon="el-icon-edit"
+                circle
+                @click="updateBlog(row)"
+              ></el-button>
+              <el-button
+                type="danger"
+                icon="el-icon-delete"
+                circle
+                @click="deleteBlog(row)"
+              ></el-button>
+            </template>
+          </el-table-column>
         </el-table>
 
         <el-dialog title="文章详情" :visible.sync="dialogVisible" width="40%">
@@ -87,8 +108,8 @@ export default defineComponent({
     };
     // 点击新增按钮触发方法
     const add = () => {
-      console.log("新增");
       context.refs.createBlogPane.isOpen = true;
+      context.refs.createBlogPane.isCreate = true;
     };
     //获取博客列表方法
     const getBlog = () => {
@@ -101,6 +122,10 @@ export default defineComponent({
     const updateList = (msg: any) => {
       getBlog();
       console.log(msg);
+    };
+    // 修改博客内容
+    const updateBlog = (row: any) => {
+      context.refs.createBlogPane.updateBlog(row);
     };
     onMounted(() => {
       getBlog();
@@ -115,6 +140,7 @@ export default defineComponent({
       dialogContent,
       add,
       updateList,
+      updateBlog,
     };
   },
 });

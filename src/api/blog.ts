@@ -23,3 +23,27 @@ export const createBlog = (params: any) => {
     data: params,
   });
 };
+
+/**
+ * @author duchao
+ * @description 修改博客接口
+ */
+export const updatedBlog = (_id: string, params: any) => {
+  return axios({
+    method: "put",
+    url: `${BASE_URL}/blog/update/${_id}`,
+    data: params,
+  });
+};
+
+/**
+ * @author duchao
+ * @description 删除博客接口
+ */
+export const deleteBlog = (params: any) => {
+  return axios({
+    method: "delete",
+    url: `${BASE_URL}/blog/delete`,
+    data: params,
+  });
+};
