@@ -19,7 +19,7 @@
           <el-input type="textarea" v-model="blogContent.body"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitCreate">创建</el-button>
+          <el-button type="primary" @click="submitCreate">确定</el-button>
           <el-button @click="closeDialog"> 重置</el-button>
         </el-form-item>
       </el-form>
@@ -80,7 +80,12 @@ export default defineComponent({
       context.refs.formContent.validate((valid: any) => {
         if (valid && isCreate.value) {
           console.log(blogContent);
-          createBlog(blogContent).then((res) => {
+          createBlog({
+            title: blogContent.title,
+            author: blogContent.author,
+            desc: blogContent.desc,
+            body: blogContent.body,
+          }).then((res) => {
             console.log(res);
           });
           // 触发父组件中重新渲染博客列表方法说
@@ -91,7 +96,9 @@ export default defineComponent({
             type: "success",
             message: "添加成功",
           });
-        } else {
+        } else if (valid && !isCreate.value) {
+          console.log("ok");
+
           updatedBlog(blogContent._id, {
             title: blogContent.title,
             author: blogContent.author,
@@ -99,11 +106,11 @@ export default defineComponent({
             body: blogContent.body,
           }).then((res) => {
             console.log(res);
-            // 触发父组件中重新渲染博客列表方法说
-            context.emit("update", "ok");
-            context.refs.formContent.resetFields();
-            isOpen.value = false;
           });
+          // 触发父组件中重新渲染博客列表方法说
+          context.emit("update", "ok");
+          context.refs.formContent.resetFields();
+          isOpen.value = false;
           root.$message({
             type: "success",
             message: "修改成功",

@@ -10,7 +10,7 @@
         >添加</el-button
       >
       <div class="blog-list">
-        <el-table :data="blogData">
+        <el-table :data="blogData" height="500">
           <el-table-column
             prop="title"
             width="180"
@@ -42,7 +42,7 @@
               {{ new Date(scope.row.updatedAt).toLocaleString() }}
             </template>
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column label="操作" fixed="right" width="110">
             <template v-slot="{ row }">
               <el-button
                 type="primary"
@@ -90,10 +90,11 @@
 <script lang="ts">
 import { ref, defineComponent, onMounted } from "@vue/composition-api";
 import CreateBlogPane from "./pane/CreateBlogPane.vue";
-import { getBlogList } from "@/api/blog";
+import { getBlogList, deleteBlogById } from "@/api/blog";
 export default defineComponent({
   components: { CreateBlogPane },
   setup(prop: any, context: any) {
+    const root: any = context.root;
     const selectValue = ref("下拉菜单");
     const blogData = ref([]);
     const selectDropdown = (command: any) => {
@@ -127,6 +128,17 @@ export default defineComponent({
     const updateBlog = (row: any) => {
       context.refs.createBlogPane.updateBlog(row);
     };
+    // 删除博客
+    const deleteBlog = (row: any) => {
+      deleteBlogById(row._id).then((res: any) => {
+        console.log(res);
+        getBlog();
+        root.$message({
+          type: "success",
+          message: "删除成功",
+        });
+      });
+    };
     onMounted(() => {
       getBlog();
     });
@@ -141,6 +153,7 @@ export default defineComponent({
       add,
       updateList,
       updateBlog,
+      deleteBlog,
     };
   },
 });

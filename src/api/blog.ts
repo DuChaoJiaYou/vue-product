@@ -40,10 +40,9 @@ export const updatedBlog = (_id: string, params: any) => {
  * @author duchao
  * @description 删除博客接口
  */
-export const deleteBlog = (params: any) => {
+export const deleteBlogById = (_id: string) => {
   return axios({
     method: "delete",
-    url: `${BASE_URL}/blog/delete`,
-    data: params,
+    url: `${BASE_URL}/blog/delete/${_id}`,
   });
 };
