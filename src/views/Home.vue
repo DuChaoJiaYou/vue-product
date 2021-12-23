@@ -83,7 +83,7 @@ export default defineComponent({
     margin-top: 10px;
     background-color: #fff;
     padding: 10px;
-    height: 600px;
+    height: 700px;
     border-radius: 5px;
 
     .options {

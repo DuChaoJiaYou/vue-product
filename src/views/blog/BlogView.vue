@@ -10,7 +10,7 @@
         >添加</el-button
       >
       <div class="blog-list">
-        <el-table :data="blogData" height="500">
+        <el-table :data="blogData" height="600">
           <el-table-column
             prop="title"
             width="180"

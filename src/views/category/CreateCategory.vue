@@ -6,23 +6,23 @@
         <el-form-item label="上级分类">
           <el-select
             style="width: 350px"
-            v-model="parent"
+            v-model="info.parent"
             clearable
             placeholder="请选择上级分类"
           >
             <el-option
-              v-for="(option, label) in optionVal"
-              :key="label"
-              :label="option.label"
-              :value="option.value"
+              v-for="(option, _id) in optionVal"
+              :key="_id"
+              :label="option.name"
+              :value="option._id"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="名称">
-          <el-input style="width: 350px" v-model="name"></el-input>
+          <el-input style="width: 350px" v-model="info.name"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="createCategory">确认添加</el-button>
+          <el-button type="primary" @click="addCategory">确认添加</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -30,39 +30,54 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from "@vue/composition-api";
-import { createCategory } from "@/api/blog";
+import {
+  ref,
+  defineComponent,
+  reactive,
+  onMounted,
+} from "@vue/composition-api";
+import { createCategory, initParentCategory } from "@/api/category";
 export default defineComponent({
-  setup() {
-    const parent = ref("");
-    const optionVal = ref([
-      {
-        label: "黄金糕",
-        value: "选项一",
-      },
-      {
-        label: "双皮奶",
-        value: "选项二",
-      },
-    ]);
+  setup(props: any, context: any) {
+    const root: any = context.root;
+    // 定义新增类别绑定数据，分别为选择上一级类别id,和新增二级类别名称
+    const info = reactive({
+      parent: "",
+      name: "",
+    });
+    const optionVal = ref([]);
 
     const name = ref("");
-    const createCategory = () => {
-      console.log("1");
+    const addCategory = () => {
+      createCategory(info).then((res: any) => {
+        if (res.data.code === 1) {
+          root.$message({
+            type: "success",
+            message: "新增成功",
+          });
+          getParents();
+        }
+      });
     };
     // 初始化上级分类
     const getParents = () => {
-      //   initParentCategory().then((res: any) => {
-      //     if (res?.data.code === 1) {
-      //       //
-      //     }
-      //   });
+      initParentCategory().then((res: any) => {
+        if (res?.data.code === 1) {
+          console.log(res.data);
+          optionVal.value = res.data.msg;
+
+          //
+        }
+      });
     };
+    onMounted(() => {
+      getParents();
+    });
     return {
-      parent,
+      info,
       optionVal,
       name,
-      createCategory,
+      addCategory,
       getParents,
     };
   },
