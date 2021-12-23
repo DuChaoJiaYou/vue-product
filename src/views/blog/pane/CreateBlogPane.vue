@@ -3,7 +3,7 @@
     <el-dialog
       :title="`${isCreate ? '新增' : '修改'}博客`"
       :visible.sync="isOpen"
-      @closed="closeDialog"
+      @closed="clearForm"
     >
       <el-form :model="blogContent" ref="formContent" :rules="blogCreateRules">
         <el-form-item label="标题" prop="title">
@@ -20,7 +20,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitCreate">确定</el-button>
-          <el-button @click="closeDialog"> 重置</el-button>
+          <el-button @click="clearForm"> 重置</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -28,7 +28,12 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, reactive } from "@vue/composition-api";
+import {
+  ref,
+  defineComponent,
+  reactive,
+  onMounted,
+} from "@vue/composition-api";
 import { createBlog, updatedBlog } from "@/api/blog";
 export default defineComponent({
   setup(props: any, context: any) {
@@ -67,7 +72,7 @@ export default defineComponent({
       ],
     });
     // 博客详情内容表单
-    const blogContent = reactive({
+    const blogContent = ref({
       title: "",
       author: "",
       desc: "",
@@ -81,10 +86,10 @@ export default defineComponent({
         if (valid && isCreate.value) {
           console.log(blogContent);
           createBlog({
-            title: blogContent.title,
-            author: blogContent.author,
-            desc: blogContent.desc,
-            body: blogContent.body,
+            title: blogContent.value.title,
+            author: blogContent.value.author,
+            desc: blogContent.value.desc,
+            body: blogContent.value.body,
           }).then((res) => {
             console.log(res);
           });
@@ -99,11 +104,11 @@ export default defineComponent({
         } else if (valid && !isCreate.value) {
           console.log("ok");
 
-          updatedBlog(blogContent._id, {
-            title: blogContent.title,
-            author: blogContent.author,
-            desc: blogContent.desc,
-            body: blogContent.body,
+          updatedBlog(blogContent.value._id, {
+            title: blogContent.value.title,
+            author: blogContent.value.author,
+            desc: blogContent.value.desc,
+            body: blogContent.value.body,
           }).then((res) => {
             console.log(res);
           });
@@ -122,16 +127,32 @@ export default defineComponent({
     const updateBlog = (row: any) => {
       isOpen.value = true;
       isCreate.value = false;
-      blogContent.title = row.title;
-      blogContent.author = row.author;
-      blogContent.desc = row.desc;
-      blogContent.body = row.body;
-      blogContent._id = row._id;
+      root.$nextTick(() => {
+        blogContent.value.title = row.title;
+        blogContent.value.author = row.author;
+        blogContent.value.desc = row.desc;
+        blogContent.value.body = row.body;
+        blogContent.value._id = row._id;
+      });
     };
     // 关闭弹窗后清空表单、重置按钮点击重置表单的函数
-    const closeDialog = () => {
-      context.refs.formContent.resetFields();
+    const clearForm = () => {
+      //  element-ui resetFields 有bug  解决方法如下
+
+      root.$nextTick(() => {
+        context.refs.formContent.resetFields();
+        console.log("new clear");
+      });
     };
+    onMounted(() => {
+      // blogContent.value = {
+      //   title: "",
+      //   author: "",
+      //   desc: "",
+      //   body: "",
+      //   _id: "",
+      // };
+    });
     return {
       isCreate,
       isOpen,
@@ -139,7 +160,7 @@ export default defineComponent({
       submitCreate,
       blogCreateRules,
       updateBlog,
-      closeDialog,
+      clearForm,
     };
   },
 });

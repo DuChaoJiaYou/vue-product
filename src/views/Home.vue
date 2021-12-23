@@ -8,19 +8,27 @@
         <el-menu class="el-menu-vertical-demo" default-active="1-1" router>
           <el-submenu index="1">
             <template v-slot:title>
-              <span>博客</span>
+              <span>博客管理</span>
             </template>
             <el-menu-item index="1-1" :route="{ path: '/blogView' }">
               博客总览
             </el-menu-item>
-            <el-menu-item index="1-2" :route="{ path: '/blogManage' }">
-              博客管理
-            </el-menu-item>
+            <!-- <el-menu-item index="1-2" :route="{ path: '/blogManage' }">
+              类别管理
+            </el-menu-item> -->
           </el-submenu>
 
-          <el-menu-item index="2" :route="{ path: '/personal' }">
-            个人设置
-          </el-menu-item>
+          <el-submenu index="2" :route="{ path: '/personal' }">
+            <template v-slot:title>
+              <span>分类管理</span>
+            </template>
+            <el-menu-item index="2-1" :route="{ path: '/createCategory' }"
+              >新建分类</el-menu-item
+            >
+            <el-menu-item index="2-2" :route="{ path: '/categoryList' }"
+              >分类列表</el-menu-item
+            >
+          </el-submenu>
         </el-menu>
       </div>
       <div class="view">
@@ -34,8 +42,8 @@
 </template>
 
 <script lang="ts">
-import { ref, computed } from "@vue/composition-api";
-export default {
+import { ref, computed, defineComponent } from "@vue/composition-api";
+export default defineComponent({
   setup() {
     console.log();
 
@@ -47,7 +55,7 @@ export default {
       title,
     };
   },
-};
+});
 </script>
 <style lang="less" scoped>
 .home {

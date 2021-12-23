@@ -130,15 +130,29 @@ export default defineComponent({
     };
     // 删除博客
     const deleteBlog = (row: any) => {
-      deleteBlogById(row._id).then((res: any) => {
-        console.log(res);
-        getBlog();
-        root.$message({
-          type: "success",
-          message: "删除成功",
+      root
+        .$confirm("确定要删除该博客吗？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+        })
+        .then(() => {
+          deleteBlogById(row._id).then((res: any) => {
+            console.log(res);
+            getBlog();
+          });
+          root.$message({
+            type: "success",
+            message: "删除成功",
+          });
+        })
+        .catch(() => {
+          root.$message({
+            type: "info",
+            message: "已取消删除",
+          });
         });
-      });
     };
+
     onMounted(() => {
       getBlog();
     });

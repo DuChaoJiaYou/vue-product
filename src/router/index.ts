@@ -8,6 +8,10 @@ import BlogManage from "../views/blog/BlogManage.vue";
 //个人管理
 import Personal from "../views/personal/Personal.vue";
 
+//类别管理
+import CreateCategory from "../views/category/CreateCategory.vue";
+import CategoryList from "../views/category/CategoryList.vue";
+
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
@@ -31,6 +35,16 @@ const routes: Array<RouteConfig> = [
         path: "personal",
         name: "personal",
         component: Personal,
+      },
+      {
+        path: "/createCategory",
+        name: "createCategory",
+        component: CreateCategory,
+      },
+      {
+        path: "/CategoryList",
+        name: "categoryList",
+        component: CategoryList,
       },
     ],
   },
